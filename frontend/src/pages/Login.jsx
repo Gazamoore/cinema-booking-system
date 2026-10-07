@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     //storing the email and password
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    //initialising the navigate function
+    const navigate = useNavigate();
 
     //sending login info to the backend
     const handleSubmit = (event) => {
@@ -25,7 +28,11 @@ function Login() {
             )
             .then(response => response.json())
             .then(data => {
-               console.log(data);
+                console.log(data);
+
+                if (data.success){
+                    navigate("/Home");
+                }
             })
             .catch(error => {
                 console.error("Login error: ", error);
