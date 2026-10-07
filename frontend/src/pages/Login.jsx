@@ -23,20 +23,21 @@ function Login() {
                     })
                 }
             )
-            //.then(response => response.json())
-            //.then(data => {
-            //    console.log(data);
-            //})
-            .then(response => {
+            .then(response => response.json())
+            .then(data => {
+               console.log(data);
+            })
+            .catch(error => {
+                console.error("Login error: ", error);
+            });
+            //testing to see why my backend wasnt sending back data
+            /*.then(response => {
                 console.log("HTTP status:", response.status);
                 return response.text();
             })
             .then(data => {
                 console.log("Backend response:", data)
-            })
-            .catch(error => {
-                console.error("Login error: ", error);
-            });
+            })*/
     };
 
     return (
