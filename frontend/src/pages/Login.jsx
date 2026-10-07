@@ -79,6 +79,9 @@ function Login() {
                 <button type="submit">
                     Login
                 </button>
+                <button type="button" onClick={() => navigate("/register")}>
+                    Create Account
+                </button>
             </form>
         </div>
     );

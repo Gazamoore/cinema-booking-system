@@ -1,6 +1,5 @@
 <?php
-    require_once '../../config/dbconn.php';
-    require_once '../../includes/functions.php';
+    
 
     //because my backend is running on Ampps I need something to help with CORS, hence the first header
     header('Access-Control-Allow-Origin: http://localhost:5173');
@@ -14,38 +13,32 @@
         exit;
     }
 
-   
+    require_once '../../config/dbconn.php';
+    require_once '../../includes/functions.php';
 
-    //Getting the data being snet by react
     $data = json_decode(file_get_contents("php://input"), true);
-    $email = $data['email'];
-    $password = $data['password'];
-    //calling the findUserByEmail function
-    $user = findUserByEmail($pdo, $email);
+    $firstName = $data['first_name'] ?? '';
+    $email = $data['email'] ?? '';
+    $password = $data['password'] ?? '';
 
-    //checking to see if the user exists and sending a user not found message if they dont
-    if(!$user){
+    //checking to ensure all fields were entered
+    if(empty($firstName) || empty($email) || empty($password)){
         echo json_encode([
             'success' => false,
-            'message' => 'User not Found'
+            'message' => 'Please ensure that all fields are filled in'
+        ]);
+        exit;
+    }
+    
+    if(checkEmailExists($pdo, $email)){
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error creating account as an account with that email already exists.'
         ]);
         exit;
     }
 
-    if(password_verify($password, $user['password'])){
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-
-        echo json_encode([
-            'success' => true,
-            'message' => 'Logged in Successfully'
-        ]);
-
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Incorrect login information'
-        ]);
-        exit;
-    }
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    addUser($pdo, $firstName, $email, $hashedPassword);
+    
 ?>
