@@ -19,6 +19,6 @@
     $showtimes = getShowtimes($pdo);
     echo json_encode([
         'success' => true,
-        'message' => $showtimes
+        'showtimes' => $showtimes
     ]);
 ?>

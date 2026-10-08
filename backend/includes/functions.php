@@ -110,13 +110,13 @@
 
     function getShowtimes($pdo){
         $stmt = $pdo->prepare("SELECT showtimes.id, showtimes.show_time, movies.id AS movie_id, movies.title, movies.description, movies.duration_minutes, theatres.id AS theatre_id,
-         theatres.name AS theatre_name, cinemas.id AS cinema_id, cinemas.name AS cinema_name, cinemas.address FROM showtimes 
-         INNER JOIN movies ON showtimes.movie_id = movies.id 
-         INNER JOIN theatres ON showtimes.theatre_id = theatres.id 
-         INNER JOIN cinemas ON theatres.cinema_id = cinemas.id 
-         WHERE showtimes.show_time >= NOW() AND showtimes.show_time < DATE_ADD(CURDATE(), INTERVAL 7 DAY 
-         ORDER BY showtimes.show_time ASC");
-
-         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        theatres.name AS theatre_name, cinemas.id AS cinema_id, cinemas.name AS cinema_name, cinemas.address FROM showtimes 
+        INNER JOIN movies ON showtimes.movie_id = movies.id 
+        INNER JOIN theatres ON showtimes.theatre_id = theatres.id 
+        INNER JOIN cinemas ON theatres.cinema_id = cinemas.id 
+        WHERE showtimes.show_time >= NOW() AND showtimes.show_time < DATE_ADD(NOW(), INTERVAL 7 DAY) 
+        ORDER BY showtimes.show_time ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>

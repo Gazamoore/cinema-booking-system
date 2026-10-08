@@ -5,6 +5,7 @@ function Movies(){
 
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [showtimes, setShowtimes] = useState([]);
 
     //testing to see if my session is working and the variables are carried over properly
     useEffect(() => {
@@ -25,6 +26,20 @@ function Movies(){
             setIsLoggedIn(false);
         });
     }, []);
+
+    useEffect(() => {
+        fetch("http://localhost/cinema-booking-system/backend/api/show-time/getShowtimes.php")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if(data.success){
+                setShowtimes(data.showtimes);
+            }
+        })
+        .catch(error => {
+            console.error("Showtimes error:", error);
+        });
+    }, [])
 
     function handleLogout(){
         fetch(
@@ -71,8 +86,35 @@ function Movies(){
             </nav>
             <header className="home-container">
                 <h1>Select A Cinema</h1>
-                <div className="home-btns">
-                    
+                <div className="showtimes-container">
+                    {showtimes.map(showtime => (
+                        <div className="showtime-card" key={showtime.id}>
+                            <h2>{showtime.title}</h2>
+                            <p>
+                                <strong>Cinema: </strong>{" "}
+                                {showtime.cinema_name}
+                            </p>
+                            <p>
+                                <strong>Theatre:</strong>{" "}
+                                {showtime.theatre_name}
+                            </p>
+                            <p>
+                                <strong>Date:</strong>{" "}
+                                {new Date(
+                                    showtime.show_time
+                                ).toLocaleDateString()}
+                            </p>
+                            <p>
+                                <strong>Time:</strong>
+                                {new Date(
+                                    showtime.show_time
+                                ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                })}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </header>
         </div>
