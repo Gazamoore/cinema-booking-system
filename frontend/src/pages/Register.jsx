@@ -30,7 +30,7 @@ function Register() {
 
             if(data.success){
                 alert("Account Created Successfully");
-                navigate("/home");
+                navigate("/");
             } else {
                 alert(data.message);
             }
@@ -41,54 +41,59 @@ function Register() {
     }
 
     return (
-        <div>
-            <h1>
-                Account Information
-            </h1>
-            <form onSubmit={handleRegistration}>
-                <div>
-                    <label>
-                        First Name: 
-                    </label>
-                    <input
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>
-                        Email: 
-                    </label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>
-                        Password: 
-                    </label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <button type="submit">
-                    Create Account
-                </button>
-            </form>
-            <button type="submit" onClick={() => navigate("/")}>
-                Back to Login
-            </button>
+        <div className="login-page">
+            <div className="login-container">
+                <h1>
+                    Account Information
+                </h1>
+                <form onSubmit={handleRegistration}>
+                    <div className="input-container">
+                        <label htmlFor="first-name">
+                            First Name: 
+                        </label>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="Enter your first name"
+                            required
+                        />
+                    </div>
+                    <div className="input-container">
+                        <label htmlFor="email">
+                            Email: 
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email address"
+                            required
+                        />
+                    </div>
+                    <div className="input-container">
+                        <label htmlFor="password">
+                            Password: 
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="login-button">
+                        Create Account
+                    </button>
+                    <button type="button" className="register-button" onClick={(e) => navigate("/")}>
+                        Back to Login
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
 
 export default Register;
+

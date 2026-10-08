@@ -9,8 +9,8 @@ function Login() {
     const navigate = useNavigate();
 
     //sending login info to the backend
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
             fetch(
                 "http://localhost/cinema-booking-system/backend/api/auth/login.php",
                 {
@@ -48,41 +48,47 @@ function Login() {
     };
 
     return (
-        <div>
-            <h1>Login</h1>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">
+        <div className="login-page">
+            <div className="login-container">
+                <h1>
                     Login
-                </button>
-                <button type="button" onClick={() => navigate("/register")}>
-                    Create Account
-                </button>
-            </form>
+                </h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="input-container">
+                        <label htmlFor="email">
+                            Email: 
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email address"
+                            required
+                        />
+                    </div>
+                    <div className="input-container">
+                        <label htmlFor="password">
+                            Password: 
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="login-button">
+                        Login
+                    </button>
+                    <button type="button" className="register-button" onClick={() => navigate("/register")}>
+                        Create Account
+                    </button>
+                    <button type="button" className="guest-access-button" onClick={() => navigate("/Home")}>
+                        Continue as Guest
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
