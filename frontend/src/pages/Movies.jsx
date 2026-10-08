@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Home(){
+function Movies(){
 
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -70,20 +70,12 @@ function Home(){
                 </div>
             </nav>
             <header className="home-container">
-                <h1>Cinema Booking System</h1>
+                <h1>Select A Cinema</h1>
                 <div className="home-btns">
-                    <button className="browse-btn" onClick={() => navigate("/movies")}>
-                        Browse Movies
-                    </button>
-                    {isLoggedIn === true && (
-                    <button className="booking-btn" onClick={() => navigate("/bookings")}>
-                        My Bookings
-                    </button>
-                    )}
+                    
                 </div>
             </header>
         </div>
     );
 }
-
-export default Home;
+export default Movies;
