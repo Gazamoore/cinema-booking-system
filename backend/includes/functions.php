@@ -35,4 +35,88 @@
         }
         
     }
+    //deleteing the old showtimes from days that have passed
+    function deleteOldShowtimes($pdo){
+        $stmt = $pdo->prepare("DELETE FROM showtimes WHERE show_time < NOW()");
+        $stmt->execute();
+    }
+
+    //generating new showtimes on a rolling 7 day window
+    function generateShowtimes($pdo){
+        $today = new DateTime();
+
+        $showtimes = [
+            [
+                'movie_id' => 1,
+                'theatre_id' => 1,
+                'time' => '18:00:00'
+            ],
+            [
+                'movie_id' => 1,
+                'theatre_id' => 1,
+                'time' => '21:00:00'
+            ],
+            [
+                'movie_id' => 2,
+                'theatre_id' => 2,
+                'time' => '18:30:00'
+            ],
+            [
+                'movie_id' => 2,
+                'theatre_id' => 2,
+                'time' => '21:30:00'
+            ],
+            [
+                'movie_id' => 3,
+                'theatre_id' => 3,
+                'time' => '18:00:00'
+            ],
+            [
+                'movie_id' => 3,
+                'theatre_id' => 3,
+                'time' => '21:30:00'
+            ],
+            [
+                'movie_id' => 4,
+                'theatre_id' => 4,
+                'time' => '18:00:00'
+            ],
+            [
+                'movie_id' => 4,
+                'theatre_id' => 4,
+                'time' => '21:30:00'
+            ]
+        ];
+
+        for($i = 0; $i < 7; $i++){
+            //cloning the date as I dont want it to just = $today, I want a new DateTime object because I dont want to change $today's value
+            $date = clone $today;
+            //moving forward day by day until I am 7 days in the future
+            $date->modify("+$i days");
+            //adding the date and time together
+            foreach($showtimes as $showtime){
+                $dateTime = $date->format('Y-m-d').' '.$showtime['time'];
+                //checking to see if the showtime already exists
+                $stmt = $pdo->prepare("SELECT id FROM showtimes WHERE movie_id=? AND theatre_id=? AND show_time=?");
+                $stmt->execute([$showtime['movie_id'], $showtime['theatre_id'], $dateTime]);
+
+                if(!$stmt->fetch()){
+                    $stmt = $pdo->prepare("INSERT INTO showtimes (movie_id, theatre_id, show_time) VALUES (?, ?, ?)");
+                    $stmt->execute([$showtime['movie_id'], $showtime['theatre_id'], $dateTime]);
+                }
+            }
+        }
+    }
+
+    function getShowtimes($pdo){
+        $stmt = $pdo->prepare("SELECT showtimes.id, showtimes.show_time, movies.id AS movie_id, movies.title, movies.description, movies.duration_minutes, theatres.id AS theatre_id,
+         theatres.name AS theatre_name, cinemas.id AS cinema_id, cinemas.name AS cinema_name, cinemas.address FROM showtimes 
+         INNER JOIN movies ON showtimes.movie_id = movies.id 
+         INNER JOIN theatres ON showtimes.theatre_id = theatres.id 
+         INNER JOIN cinemas ON theatres.cinema_id = cinemas.id 
+         WHERE showtimes.show_time >= NOW() AND showtimes.show_time < DATE_ADD(CURDATE(), INTERVAL 7 DAY 
+         ORDER BY showtimes.show_time ASC");
+
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 ?>
