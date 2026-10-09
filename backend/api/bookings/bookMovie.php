@@ -2,14 +2,12 @@
     require_once '../../config/dbconn.php';
     require_once '../../includes/functions.php';
 
-    //because my backend is running on Ampps I need something to help with CORS, hence the first header
     header('Access-Control-Allow-Origin: http://localhost:5173');
     header('Access-Control-Allow-Credentials: true');
     header('Access-Control-Allow-Headers: Content-Type');
     header('Access-Control-Allow-Methods: POST, OPTIONS');
     header('Content-Type: application/json');
 
-    // ending if an OPTIONS request is sent
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         exit;
     }
@@ -47,7 +45,7 @@
 
     $showtimeID = filter_var($data['showtime_id'], FILTER_VALIDATE_INT);
     $numberOfTickets = filter_var($data['number_of_tickets'], FILTER_VALIDATE_INT);
-    //validating showtime ID by checking that it isnt negative
+    
     if($showtimeID === false || $showtimeID < 1){
         http_response_code(400);
         echo json_encode([
@@ -56,7 +54,7 @@
         ]);
         exit;
     }
-    //checking to see if the number of tickets is at least 1
+    
     if($numberOfTickets === false || $numberOfTickets <1){
         http_response_code(400);
         echo json_encode([
@@ -103,7 +101,7 @@
             'message' => 'Tickets Booked successfully',
             'booking_reference' => $bookingReference
         ]);
-    //using throwable in case any hp errors arise and I need to rollBack
+
     } catch(PDOException $e){
         if($pdo->inTransaction()){
             $pdo->rollBack();

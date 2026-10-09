@@ -4,14 +4,12 @@
     function findUserByEmail($pdo, $email){
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
-        //returning an associative array of users
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     function checkEmailExists($pdo, $email){
         $stmt= $pdo->prepare("SELECT id FROM users WHERE email=?");
         $stmt->execute([$email]);
-        //returning false if no user was found
         return $stmt->fetch() !== false;
     }
 
@@ -34,13 +32,11 @@
         }
         
     }
-    //deleteing the old showtimes from days that have passed
     function deleteOldShowtimes($pdo){
         $stmt = $pdo->prepare("DELETE FROM showtimes WHERE show_time < NOW()");
         $stmt->execute();
     }
 
-    //generating new showtimes on a rolling 7 day window
     function generateShowtimes($pdo){
         $today = new DateTime();
 
@@ -90,9 +86,7 @@
         for($i = 0; $i < 7; $i++){
             //cloning the date as I dont want it to just = $today, I want a new DateTime object because I dont want to change $today's value
             $date = clone $today;
-            //moving forward day by day until I am 7 days in the future
             $date->modify("+$i days");
-            //adding the date and time together
             foreach($showtimes as $showtime){
                 $dateTime = $date->format('Y-m-d').' '.$showtime['time'];
                 //checking to see if the showtime already exists
