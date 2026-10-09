@@ -1,4 +1,6 @@
 <?php
+
+    require_once '../../includes/functions.php';
     //because my backend is running on Ampps I need something to help with CORS, hence the first header
     header('Access-Control-Allow-Origin: http://localhost:5173');
     header('Access-Control-Allow-Credentials: true');
@@ -13,7 +15,7 @@
 
     session_start();
 
-    if(isset($_SESSION['user_id'])){
+    if(isLoggedIn()){
         echo json_encode([
             'success' => true,
             'loggedIn' =>true,

@@ -40,5 +40,9 @@
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     addUser($pdo, $firstName, $email, $hashedPassword);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Account created successfully'
+    ]);
     
 ?>

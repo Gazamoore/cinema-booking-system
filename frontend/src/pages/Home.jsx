@@ -58,12 +58,12 @@ function Home(){
                 <div className="home-nav-actions">
                     {/*Checking to see if the user is logged in or not and displaying either the login or logout button respectfully*/}
                     {isLoggedIn === false && (
-                        <button className="nav-button" onClick={() => navigate("/")}>
+                        <button className="nav-btn" onClick={() => navigate("/")}>
                             Login
                         </button>
                     )}
                     {isLoggedIn === true && (
-                        <button className="nav-button" onClick={handleLogout}>
+                        <button className="nav-btn" onClick={handleLogout}>
                             Logout
                         </button>
                     )}

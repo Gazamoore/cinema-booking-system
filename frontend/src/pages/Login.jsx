@@ -78,13 +78,13 @@ function Login() {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">
+                    <button type="submit" className="login-btn">
                         Login
                     </button>
-                    <button type="button" className="register-button" onClick={() => navigate("/register")}>
+                    <button type="button" className="register-btn" onClick={() => navigate("/register")}>
                         Create Account
                     </button>
-                    <button type="button" className="guest-access-button" onClick={() => navigate("/Home")}>
+                    <button type="button" className="guest-access-btn" onClick={() => navigate("/Home")}>
                         Continue as Guest
                     </button>
                 </form>
