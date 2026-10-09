@@ -15,6 +15,7 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+        http_response_code(405);
         echo json_encode([
             'success' => false,
             'message' => 'Method not allowed'
@@ -25,6 +26,7 @@
     session_start();
 
     if(!isLoggedIn()){
+        http_response_code(401);
         echo json_encode([
             'success' => false,
             'message' => 'Please log inbefore booking a movie'
@@ -35,7 +37,7 @@
     $data = json_decode(file_get_contents('php://input'), true);
 
     if(!is_array($data) || !isset($data['showtime_id']) || !isset($data['number_of_tickets'])){
-
+        http_response_code(400);
         echo json_encode([
             'success' => false,
             'message' => 'Showtime and ticket quantity cannot be blank.'
@@ -56,7 +58,7 @@
     }
     //checking to see if the number of tickets is at least 1
     if($numberOfTickets === false || $numberOfTickets <1){
-
+        http_response_code(400);
         echo json_encode([
             'success' => false,
             'message' => 'You must book at least one ticket'
@@ -72,6 +74,7 @@
 
         if(!$showtime){
             $pdo->rollBack();
+            http_response_code(400);
             echo json_encode([
                 'success' => false,
                 'message' => 'Time unavailable'

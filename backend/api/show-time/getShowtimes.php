@@ -17,6 +17,7 @@
     deleteOldShowtimes($pdo);
     generateShowtimes($pdo);
     $showtimes = getShowtimes($pdo);
+    http_response_code(200);
     echo json_encode([
         'success' => true,
         'showtimes' => $showtimes

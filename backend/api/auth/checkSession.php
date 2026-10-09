@@ -16,12 +16,14 @@
     session_start();
 
     if(isLoggedIn()){
+        http_response_code(202);
         echo json_encode([
             'success' => true,
             'loggedIn' =>true,
             'user_id' =>$_SESSION['user_id']
         ]);
     } else {
+        http_response_code(401);
         echo json_encode([
             'success' => false,
             'loggedIn' => false,
