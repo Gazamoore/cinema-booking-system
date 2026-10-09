@@ -100,6 +100,7 @@ function Bookings(){
                                 <th>Tickets</th>
                                 <th>Booking Reference</th>
                                 <th>Booked At</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,6 +113,7 @@ function Bookings(){
                                     <td>{booking.number_of_tickets}</td>
                                     <td>{booking.booking_reference}</td>
                                     <td>{booking.booked_at}</td>
+                                    <td><button className="btn-cancel">Cancel Booking</button></td>
                                 </tr>
                             ))}
                         </tbody>

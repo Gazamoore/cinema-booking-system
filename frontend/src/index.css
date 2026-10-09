@@ -300,3 +300,55 @@ body{
   font-weight: 500;
 }
 
+.bookings-tbl {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  color: #000000;
+}
+
+.tbl-wrap{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.bookings-tbl thead th{
+  background-color: #444444;
+  color: white;
+  padding: 12px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.bookings-tbl tbody tr:hover{
+  background-color: #eef3ff;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel{
+  display: inline-block;
+  width: 100px;
+  height: 50px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  background-color: #e62424;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-cancel:hover{
+  opacity: 0.85;
+}
+
+
