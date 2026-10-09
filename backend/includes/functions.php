@@ -106,7 +106,8 @@
         theatres.name AS theatre_name, cinemas.id AS cinema_id, cinemas.name AS cinema_name, cinemas.address FROM showtimes 
         INNER JOIN movies ON showtimes.movie_id = movies.id 
         INNER JOIN theatres ON showtimes.theatre_id = theatres.id 
-        INNER JOIN cinemas ON theatres.cinema_id = cinemas.id WHERE showtimes.show_time >= NOW() AND showtimes.show_time < DATE_ADD(NOW(), INTERVAL 7 DAY) 
+        INNER JOIN cinemas ON theatres.cinema_id = cinemas.id 
+        WHERE showtimes.show_time >= NOW() AND showtimes.show_time < DATE_ADD(NOW(), INTERVAL 7 DAY) 
         ORDER BY showtimes.show_time ASC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -141,5 +142,22 @@
         $stmt = $pdo->prepare("INSERT INTO bookings (user_id, showtime_id, booking_reference, number_of_tickets) VALUES (?, ?, ?, ?)");
         $stmt->execute([$userID, $showtimeID, $bookingReference, $numberOfTickets]);
         return $bookingReference;
+    }
+    
+    function viewBookings($pdo, $userID){
+        try{
+            $stmt = $pdo->prepare("SELECT bookings.id AS booking_id, bookings.booking_reference, bookings.number_of_tickets, bookings.booked_at, showtimes.show_time,
+            movies.title AS movie_title, cinemas.name AS cinema_name, cinemas.address AS cinema_address, theatres.name AS theatre_name FROM bookings
+            INNER JOIN showtimes ON bookings.showtime_id = showtimes.id
+            INNER JOIN movies ON showtimes.movie_id = movies.id
+            INNER JOIN theatres ON showtimes.theatre_id = theatres.id
+            INNER JOIN cinemas ON theatres.cinema_id = cinemas.id
+            WHERE bookings.user_id = ?
+            ORDER BY showtimes.show_time DESC");
+            $stmt->execute([$userID]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            return null;
+        }
     }
 ?>
