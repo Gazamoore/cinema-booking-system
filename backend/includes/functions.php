@@ -17,20 +17,11 @@
         try{
             $stmt = $pdo->prepare("INSERT INTO users (first_name, email, password) VALUES (?, ?, ?)");
             $stmt->execute([$firstName, $email, $hashedPassword]);
-            echo json_encode([
-                'success' => true,
-                'message' => 'User successfully created'
-            ]);
-
+            return true;
         } catch(PDOException $e){
-            $pdo->rollBack();
             error_log($e->getMessage());
-            echo json_encode([
-                'success' => false,
-                'message' => 'Error creating user',
-            ]);
+            return false;
         }
-        
     }
     function deleteOldShowtimes($pdo){
         $stmt = $pdo->prepare("DELETE FROM showtimes WHERE show_time < NOW()");
@@ -122,7 +113,8 @@
 
     function getShowtimeAndCapacity($pdo, $showtimeID){
         $stmt = $pdo->prepare("SELECT showtimes.id, showtimes.show_time, theatres.capacity FROM showtimes
-        INNER JOIN theatres ON showtimes.theatre_id = theatres.id WHERE showtimes.id =? AND showtimes.show_time >NOW() FOR UPDATE");
+        INNER JOIN theatres ON showtimes.theatre_id = theatres.id 
+        WHERE showtimes.id =? AND showtimes.show_time >NOW() FOR UPDATE");
         $stmt->execute([$showtimeID]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -158,6 +150,59 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $e){
             return null;
+        }
+    }
+
+    function logCancellation($pdo, $bookingID){
+        try{
+            $stmt = $pdo->prepare("SELECT * FROM bookings WHERE id = ?");
+            $stmt->execute([$bookingID]);
+            $cancelledBooking = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!$cancelledBooking){
+                return false;
+            }
+            $file = 'cancelledBookings.txt';
+            $data = "Cancelled at: " . date('Y-m-d H:i:s')."\t"
+                    .$cancelledBooking['id']."\t"
+                    .$cancelledBooking['user_id']."\t"
+                    .$cancelledBooking['showtime_id']."\t"
+                    .$cancelledBooking['booking_reference']."\t"
+                    .$cancelledBooking['number_of_tickets']."\t"
+                    .$cancelledBooking['booked_at'] ."\n";
+            file_put_contents($file, $data, FILE_APPEND);
+            return true;
+        } catch(PDOException $e){
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    function cancelBooking($pdo, $bookingID, $userID){
+        try{
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("SELECT bookings.id FROM bookings
+            INNER JOIN showtimes ON bookings.showtime_id = showtimes.id
+            WHERE bookings.id = ? AND bookings.user_id = ? AND showtimes.show_time >= DATE_ADD(NOW(), INTERVAL 1 HOUR)
+            FOR UPDATE");
+            $stmt->execute([$bookingID, $userID]);
+            if(!$stmt->fetch(PDO::FETCH_ASSOC)){
+                $pdo->rollBack();
+                return false;
+            }
+
+            if(!logCancellation($pdo, $bookingID)){
+                $pdo->rollBack();
+                return false;
+            }
+
+            $stmt = $pdo->prepare("DELETE FROM bookings WHERE id = ? AND user_id =?");
+            $stmt->execute([$bookingID, $userID]);
+            $pdo->commit();
+            return true;
+        } catch(PDOException $e){
+            $pdo->rollBack();
+            error_log($e->getMessage());
+            return false;
         }
     }
 ?>

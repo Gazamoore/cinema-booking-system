@@ -66,6 +66,41 @@ function Bookings(){
 
     }, [isLoggedIn]);
 
+    function handleCancellation(bookingID){
+        
+        if(!window.confirm("Are you sure you want to cancel?")){
+            return;
+        }
+        
+        fetch(
+            "http://localhost/cinema-booking-system/backend/api/bookings/cancelBookings.php",
+            {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    booking_id: bookingID
+                })
+            }
+        )
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if(data.success){
+                setBookings(previousBookings => previousBookings.filter(booking => booking.booking_id !== bookingID));
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Cancellation error:", error);
+            alert("An error occurred while cancelling your booking.");
+        });
+    }
+
     return(
         <div className="home-page">
             <nav className="home-nav">
@@ -113,7 +148,7 @@ function Bookings(){
                                     <td>{booking.number_of_tickets}</td>
                                     <td>{booking.booking_reference}</td>
                                     <td>{booking.booked_at}</td>
-                                    <td><button className="btn-cancel">Cancel Booking</button></td>
+                                    <td><button className="btn-cancel" onClick={() => handleCancellation(booking.booking_id)}>Cancel Booking</button></td>
                                 </tr>
                             ))}
                         </tbody>

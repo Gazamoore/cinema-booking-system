@@ -83,10 +83,10 @@ function Register() {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">
+                    <button type="submit" className="register-btn">
                         Create Account
                     </button>
-                    <button type="button" className="register-button" onClick={(e) => navigate("/")}>
+                    <button type="button" className="login-btn" onClick={(e) => navigate("/")}>
                         Back to Login
                     </button>
                 </form>

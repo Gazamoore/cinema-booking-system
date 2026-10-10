@@ -37,11 +37,21 @@
     }
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    addUser($pdo, $firstName, $email, $hashedPassword);
-    http_response_code(201);
-    echo json_encode([
-        'success' => true,
-        'message' => 'Account created successfully'
-    ]);
+    $newUser = addUser($pdo, $firstName, $email, $hashedPassword);
+
+    if($newUser){
+        http_response_code(201);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Account created successfully'
+        ]);
+    } else {
+        http_response_code(400);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Account created successfully'
+        ]);
+    }
+    
     
 ?>
