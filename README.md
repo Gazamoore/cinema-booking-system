@@ -19,7 +19,11 @@ A simple cinema booking system created in:
 # installation and running instructions
 
 - You will need to install Ampps at: https://www.ampps.com/downloads/
-- you will then need to clone the repository with: git clone https://github.com/Gazamoore/cinema-booking-system.git
+- you will then need to clone the repository with:
+ ```bash
+git clone https://github.com/Gazamoore/cinema-booking-system.git
+cd cinema-booking-system
+```
 - You will then need to move the cloned cinema-booking-system directory inside AMPPS web root (this is usually www)
 - Then you will need to cd into the frontend and run: 
 ```bash
