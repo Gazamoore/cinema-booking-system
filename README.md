@@ -8,13 +8,20 @@ A simple cinema booking system created in:
 
 # why I chose these technologies
 
-- I used Ampps instead of a LAMP stack because I was developing on Windows as opposed to Linux
-- I used php 8.2 as it is still getting support, whereas 7.1 is no longer getting support
+- I used Ampps instead of a LAMP stack because I was developing on Windows as opposed to Linux.
+- I used php 8.2 as it is still getting support, whereas 7.1 is no longer getting support.
+- I use Vite as a build tool as it gives me access to a fast development server.
+- I used MySQL as it works well with php.
+- I used React.js as it allows me to update the page quickly without reloading (specifically state management and the fact it is a DOM)
 
 # some best practices I used
 
 - I used password hashing to protect stored passwords in the database
 - I used prepared statements with PDO to help prevent SQL injection
+- I separated frontend and backend and they only communicate through API
+- I return the correct http_response_codes for every action
+- I keep db credentials in a .env file
+- The databases use primary and foreign keys to avoid any duplicate data
 
 # installation and running instructions
 
