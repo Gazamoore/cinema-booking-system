@@ -4,7 +4,7 @@ A simple cinema booking system created in:
 
 - React.js
 - php 8.2.30
-- sql
+- MySQL
 
 # why I chose these technologies
 

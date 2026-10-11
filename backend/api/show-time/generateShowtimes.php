@@ -2,7 +2,6 @@
     require_once '../../config/dbconn.php';
     require_once '../../includes/functions.php';
 
-    
     header('Access-Control-Allow-Origin: http://localhost:5173');
     header('Access-Control-Allow-Credentials: true');
     header('Access-Control-Allow-Headers: Content-Type');
