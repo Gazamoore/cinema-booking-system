@@ -130,6 +130,7 @@
         do {
             $bookingReference = 'MOV'.date('Y').rand(1000,9999);
             $stmt = $pdo->prepare('SELECT id FROM bookings WHERE booking_reference = ?');
+            $stmt->execute([$bookingReference]);
         } while($stmt->fetch(PDO::FETCH_ASSOC));
         $stmt = $pdo->prepare("INSERT INTO bookings (user_id, showtime_id, booking_reference, number_of_tickets) VALUES (?, ?, ?, ?)");
         $stmt->execute([$userID, $showtimeID, $bookingReference, $numberOfTickets]);
