@@ -29,6 +29,7 @@
     if(password_verify($password, $user['password'])){
         session_start();
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['login_time'] = time();
         setcookie("last_login", date("Y-m-d H:i:s"), time() + 86400);
         http_response_code(202);
         echo json_encode([

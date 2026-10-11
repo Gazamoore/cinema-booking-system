@@ -106,6 +106,11 @@
 
     function isLoggedIn(){
         if(isset($_SESSION['user_id'])){
+            if(time() - $_SESSION['login_time'] > 86400){
+                session_unset();
+                session_destroy();
+                return false;
+            }
             return true;
         }
         return false;
