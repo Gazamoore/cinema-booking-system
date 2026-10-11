@@ -46,4 +46,7 @@ cd frontend
 npm run dev
 ```
 
+# Demo of project 
+
+- A video of me demoing the project can be found here: https://www.youtube.com/watch?v=eHMz324xayc
 
